@@ -1,0 +1,14 @@
+{
+  "networks": {
+    "bsc": {
+      "id": 56,
+      "endpoint": "https://bsc-dataseed.binance.org/",
+      "skipDryRun": false
+    },
+    "bscTestnet": {
+      "id": 97,
+      "endpoint": "https://data-seed-prebsc-1-s1.binance.org:8545",
+      "skipDryRun": true
+    }
+  }
+}

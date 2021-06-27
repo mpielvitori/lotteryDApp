@@ -1,0 +1,19 @@
+{
+  "name": "Lottery",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "Martín Pielvitori",
+  "scripts": {
+    "test": "truffle test",
+    "compile": "truffle compile",
+    "migrate-bsc": "truffle migrate --reset --network bscTestnet"
+  },
+  "dependencies": {
+    "@truffle/hdwallet-provider": "1.2.3",
+    "config": "^3.3.6",
+    "truffle": "^5.3.4"
+  },
+  "devDependencies": {
+    "@openzeppelin/test-helpers": "^0.5.3"
+  }
+}

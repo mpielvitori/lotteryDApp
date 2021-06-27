@@ -1,0 +1,9 @@
+{
+  "networks": {
+    "bscTestnet": {
+      "account": {
+        "mnemonic": "MNEMONIC"
+      }
+    }
+  }
+}
