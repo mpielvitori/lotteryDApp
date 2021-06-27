@@ -4,6 +4,7 @@
 1. Go into smart-contracts folder
 1. Install project dependencies `npm i`
 1. Run migration script `MNEMONIC="admin seed phrase" npm run migrate-bsc`
+1. Check on [bsc explorer](https://testnet.bscscan.com/address/0x11fd71f54dbbab74b23d075af03482a6118843ff)
 
 ## Wallet configuration
 1. Get some ether from [Binance faucet](https://testnet.binance.org/faucet-smart)
