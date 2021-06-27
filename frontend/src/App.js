@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Lottery from './contracts/Lottery.json';
 import { getWeb3 } from './utils.js';
+import Loader from "react-loader-spinner";
 
 const states = ['IDLE', 'BETTING'];
 
@@ -13,31 +14,40 @@ function App() {
   const [houseFee, setHouseFee] = useState(undefined);
 
   useEffect(() => {
-    const init = async () => {
-      const web3 = await getWeb3();
-      const accounts = await web3.eth.getAccounts();
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = Lottery.networks[networkId];
-      const contract = new web3.eth.Contract(
-        Lottery.abi,
-        deployedNetwork && deployedNetwork.address,
-      );
+    if ('ethereum' in window) {
+      const init = async () => {
+        const web3 = await getWeb3();
+        const networkId = await web3.eth.net.getId();
+        if (!Lottery.networks[networkId]){
+          return;
+        }
+        const accounts = await web3.eth.getAccounts();
+        const deployedNetwork = Lottery.networks[networkId];
+        const contract = new web3.eth.Contract(
+          Lottery.abi,
+          deployedNetwork && deployedNetwork.address,
+        );
 
-      const [houseFee, state] = await Promise.all([
-        contract.methods.houseFee().call(),
-        contract.methods.currentState().call()
-      ]);
+        const [houseFee, state] = await Promise.all([
+          contract.methods.houseFee().call(),
+          contract.methods.currentState().call()
+        ]);
 
-      setWeb3(web3);
-      setAccounts(accounts);
-      setContract(contract);
-      setHouseFee(houseFee);
-      setBet({state: 0});
+        setWeb3(web3);
+        setAccounts(accounts);
+        setContract(contract);
+        setHouseFee(houseFee);
+        setBet({state: 0});
+      }
+      init();
+
+      window.ethereum.on('accountsChanged', accounts => {
+        setAccounts(accounts);
+      });
+      window.ethereum.on('chainChanged', error => {
+        window.location.reload();
+      });
     }
-    init();
-    window.ethereum.on('accountsChanged', accounts => {
-      setAccounts(accounts);
-    });
   }, []);
 
   const isReady = () => {
@@ -97,7 +107,18 @@ function App() {
   };
 
   if(!bet || typeof bet.state === 'undefined') {
-    return <div>Loading...</div>;
+    return (
+      <div style={{ textAlign: "center" }}>
+        <br/>
+        <br/>
+        <Loader
+          type="TailSpin" color="#00BFFF" height={80} width={80}
+        />
+
+        <br/>
+        <div>Waiting for wallet connection on BSC testnet...</div>
+      </div>
+    )
   }
 
   return (
